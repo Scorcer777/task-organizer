@@ -157,6 +157,7 @@ jobs:
           tags: notilttoday1/taski_gateway:latest
 
   deploy:
+    name: Deploy Containers on Server
     runs-on: ubuntu-latest
     needs: 
       # Дождёмся билда всех образов Taski
