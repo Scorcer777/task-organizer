@@ -2,6 +2,7 @@
 # который содержит файлы ОС и интерпретатор Python 3.9.
 FROM python:3.9
 
+RUN apt update && apt upgrade -y && apt install -y libpq-dev gcc netcat-traditional
 # Переходим в образе в директорию /app: в ней будем хранить код проекта.
 # Если директории с указанным именем нет, она будет создана. 
 # Название директории может быть любым.
@@ -14,7 +15,7 @@ COPY requirements.txt .
 
 # Выполнить в текущей директории команду терминала
 # для установки зависимостей.
-RUN pip install -r requirements.txt --no-cache-dir
+RUN pip install -U pip && pip install -r requirements.txt --no-cache-dir
 
 # Скопировать всё необходимое содержимое 
 # той директории локального компьютера, где сохранён Dockerfile,
@@ -22,4 +23,6 @@ RUN pip install -r requirements.txt --no-cache-dir
 COPY . .
 
 # При старте контейнера запустить сервер разработки.
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi"]
+RUN chmod +x starter.sh
+ENTRYPOINT ["/app/starter.sh"]
